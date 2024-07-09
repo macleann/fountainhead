@@ -14,7 +14,7 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({ text, onComplete })
       const timer = setTimeout(() => {
         setDisplayText((prev) => prev + text[index]);
         setIndex((prev) => prev + 1);
-      }, 20);  // Adjust speed as needed
+      }, 20);
       return () => clearTimeout(timer);
     } else {
       onComplete();
@@ -22,10 +22,10 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({ text, onComplete })
   }, [index, text, onComplete]);
 
   return (
-    <div className="relative">
-      <span className="text-lg font-mono text-white">{displayText}</span>
-      <span className="absolute w-2 h-5 bg-white ml-1 animate-blink"></span>
-    </div>
+    <span className="text-lg font-mono text-white whitespace-pre-wrap">
+      {displayText}
+      <span className="inline-block w-2 h-5 bg-white ml-1 animate-blink"></span>
+    </span>
   );
 };
 
