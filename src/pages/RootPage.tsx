@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import TypewriterEffect from '../components/TypewriterEffect';
 
 const RootPage: React.FC = () => {
-  const baseSentence = "Four weeks ago in Flagstaff I met a man who considered himself a dragon and so displayed scales. ";
+  const baseSentence = "Four weeks ago in Flagstaff I met a man who considered himself a dragon and so displayed scales, each laden with a poultice created with solved forms of extra-intrinsical abolishment. Deeply concerned for the man’s wellbeing I produced a blindfold from the inner pocket of my best jacket and wrestled him to the ground. ";
   const [fullText, setFullText] = useState(baseSentence);
   const [visibleText, setVisibleText] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
