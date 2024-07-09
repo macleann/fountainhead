@@ -1,11 +1,10 @@
 import React from 'react';
-import './App.css';
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <header>Are you the root or the worm?</header>
-      <div className="rwbtns">
+      <div>
         <button>root</button>
         <button>worm</button>
       </div>
