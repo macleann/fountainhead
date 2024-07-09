@@ -16,6 +16,26 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function({ addUtilities }) {
+      const newUtilities = {
+        '.scrollbar-thin': {
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'white black',
+          '&::-webkit-scrollbar': {
+            width: '16px',
+          },
+          '&::-webkit-scrollbar-track': {
+            backgroundColor: 'black',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'white',
+            border: '4px solid black',
+          },
+        },
+      }
+      addUtilities(newUtilities, ['responsive', 'hover'])
+    }
+  ],
 }
 

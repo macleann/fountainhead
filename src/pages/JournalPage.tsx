@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import TypewriterEffect from '../components/TypewriterEffect';
 
 const JournalPage: React.FC = () => {
@@ -6,7 +6,7 @@ const JournalPage: React.FC = () => {
   const journalEntries = [
     { 
       date: new Date('2024-07-09'), 
-      text: "cabinated freedom path bleakly goes, tumbling, wildly along with complete yada yada yada yada yada yada yadafor hopeful impact with concerned citizen invested only in the accounts given by folks living here years earlier while deep toff rolls about within a luxurious bin made there by frequencies which that who whom escaped control and went on to annihilate separate and regulated persons in direct commission with traders previously believed worthy and active in their attempts to partition areas located beyond normal and familiar grounds of restriction. equally combined and usually given to fits of how-now, all connected persons spread wide their arms in greet of the new arena, preparing not themselves but their others in wake of newest tragedy and willy-bothering."
+      text: "cabinated freedom path bleakly goes, tumbling, wildly along with complete yada yada yada yada yada yada yada for hopeful impact with concerned citizen invested only in the accounts given by folks living here years earlier while deep toff rolls about within a luxurious bin made there by frequencies which that who whom escaped control and went on to annihilate separate and regulated persons in direct commission with traders previously believed worthy and active in their attempts to partition areas located beyond normal and familiar grounds of restriction. equally combined and usually given to fits of how-now, all connected persons spread wide their arms in greet of the new arena, preparing not themselves but their others in wake of newest tragedy and willy-bothering."
     },
     { 
       date: new Date('2024-07-16'), 
@@ -23,12 +23,31 @@ const JournalPage: React.FC = () => {
   ];
 
   const visibleEntries = journalEntries.filter(entry => entry.date <= currentDate);
+  const [currentEntryIndex, setCurrentEntryIndex] = useState(0);
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
+
+  useEffect(() => {
+    if (currentEntryIndex < visibleEntries.length - 1 && isTypingComplete) {
+      const timer = setTimeout(() => {
+        setCurrentEntryIndex(prev => prev + 1);
+        setIsTypingComplete(false);
+      }, 1000); // Wait 1 second before starting the next entry
+      return () => clearTimeout(timer);
+    }
+  }, [currentEntryIndex, isTypingComplete, visibleEntries.length]);
 
   return (
     <div className="bg-black min-h-screen flex flex-col justify-center items-center p-5 font-mono text-white">
-      {visibleEntries.map((entry, index) => (
+      {visibleEntries.slice(0, currentEntryIndex + 1).map((entry, index) => (
         <div key={index} className="mb-8 max-w-2xl">
-          <TypewriterEffect text={entry.text} />
+          {index === currentEntryIndex ? (
+            <TypewriterEffect 
+              text={entry.text} 
+              onComplete={() => setIsTypingComplete(true)}
+            />
+          ) : (
+            <div className="text-lg font-mono text-white">{entry.text}</div>
+          )}
         </div>
       ))}
     </div>
