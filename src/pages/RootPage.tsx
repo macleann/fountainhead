@@ -35,8 +35,7 @@ const RootPage: React.FC = () => {
     <div className="bg-black min-h-screen flex flex-col justify-center items-center p-5 font-mono text-white">
       <div 
         ref={containerRef} 
-        className="w-full max-w-2xl h-[80vh] overflow-y-auto scroll-smooth"
-        style={{ scrollbarWidth: 'thin', scrollbarColor: '#4a4a4a #262626' }}
+        className="w-full max-w-2xl h-[80vh] overflow-y-auto scroll-smooth scrollbar-thin"
       >
         <TypewriterEffect 
           text={visibleText}
