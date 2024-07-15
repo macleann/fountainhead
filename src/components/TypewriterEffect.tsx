@@ -28,15 +28,13 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
   }, [index, text]);
 
   useEffect(() => {
-    let textTimer: NodeJS.Timeout;
-
     if (index === text.length && loop) {
-      textTimer = setTimeout(() => {
+      setTimeout(() => {
         setDisplayText("");
         setIndex(0);
       }, 5000); // 5 second pause before restarting
     }
-  }, [index, text, loop]);
+  }, [index, text.length, loop]);
 
   return (
     <div className="relative">
