@@ -25,7 +25,7 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
     }
 
     return () => clearTimeout(typingTimer);
-  }, [index, text, font]);
+  }, [index, text]);
 
   useEffect(() => {
     let textTimer: NodeJS.Timeout;
@@ -36,7 +36,7 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
         setIndex(0);
       }, 5000); // 5 second pause before restarting
     }
-  }, [index, font]);
+  }, [index, text, loop]);
 
   return (
     <div className="relative">
