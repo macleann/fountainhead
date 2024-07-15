@@ -1,16 +1,19 @@
+// HomePage.tsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import TypewriterEffect from "../components/TypewriterEffect";
+import { useFont } from "../components/fontprovider/FontContext";
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
+  const { font } = useFont();
 
   const handleChoice = (choice: "root" | "worm") => {
     navigate(`/${choice}`);
   };
 
   return (
-    <div className="bg-black min-h-screen flex flex-col justify-center items-center p-5 font-mono text-white">
+    <div className={`bg-black min-h-screen flex flex-col justify-center items-center p-5 font-${font} text-white`}>
       <TypewriterEffect text="Are you the root or the worm?" />
       <div className="mt-8 space-x-4">
         <button

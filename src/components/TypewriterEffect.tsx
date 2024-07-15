@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useFont } from "../components/fontprovider/FontContext";
 
 interface TypewriterEffectProps {
   text: string;
@@ -11,6 +12,7 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
 }) => {
   const [displayText, setDisplayText] = useState("");
   const [index, setIndex] = useState(0);
+  const { font } = useFont();
 
   useEffect(() => {
     let typingTimer: NodeJS.Timeout;
@@ -23,7 +25,7 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
     }
 
     return () => clearTimeout(typingTimer);
-  }, [index, text]);
+  }, [index, text, font]);
 
   useEffect(() => {
     let textTimer: NodeJS.Timeout;
@@ -34,11 +36,11 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
         setIndex(0);
       }, 5000); // 5 second pause before restarting
     }
-  }, [index]);
+  }, [index, font]);
 
   return (
     <div className="relative">
-      <span className="text-lg font-mono text-white">{displayText}</span>
+      <span className={`text-lg font-${font} text-white`}>{displayText}</span>
       <span className="absolute w-2 h-5 bg-white ml-1 animate-blink"></span>
     </div>
   );
