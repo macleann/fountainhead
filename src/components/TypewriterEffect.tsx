@@ -1,31 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { useFont } from "../components/fontprovider/FontContext";
 
 interface TypewriterEffectProps {
   text: string;
-  onComplete: () => void;
+  loop?: boolean;
 }
 
-const TypewriterEffect: React.FC<TypewriterEffectProps> = ({ text, onComplete }) => {
-  const [displayText, setDisplayText] = useState('');
+const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
+  text,
+  loop = false,
+}) => {
+  const [displayText, setDisplayText] = useState("");
   const [index, setIndex] = useState(0);
+  const { font } = useFont();
 
   useEffect(() => {
+    let typingTimer: NodeJS.Timeout;
+
     if (index < text.length) {
-      const timer = setTimeout(() => {
+      typingTimer = setTimeout(() => {
         setDisplayText((prev) => prev + text[index]);
         setIndex((prev) => prev + 1);
-      }, 20);
-      return () => clearTimeout(timer);
-    } else {
-      onComplete();
+      }, 50); // Controls the text speed
     }
-  }, [index, text, onComplete]);
+
+    return () => clearTimeout(typingTimer);
+  }, [index, text]);
+
+  useEffect(() => {
+    if (index === text.length && loop) {
+      setTimeout(() => {
+        setDisplayText("");
+        setIndex(0);
+      }, 5000); // 5 second pause before restarting
+    }
+  }, [index, text.length, loop]);
 
   return (
-    <span className="text-lg font-mono text-white whitespace-pre-wrap">
-      {displayText}
-      <span className="inline-block w-2 h-5 bg-white ml-1 animate-blink"></span>
-    </span>
+    <div className="relative">
+      <span className={`text-lg font-${font} text-white`}>{displayText}</span>
+      <span className="absolute w-2 h-5 bg-white ml-1 animate-blink"></span>
+    </div>
   );
 };
 

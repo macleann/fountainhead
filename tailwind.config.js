@@ -5,6 +5,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'amethysta': ['Amethysta'],
+        'tiny5': ['Tiny5'],
+        'wittgenstein': ['Wittgenstein'],
+      },
       animation: {
         blink: 'blink 0.7s steps(1) infinite',
       },
