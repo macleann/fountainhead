@@ -13,23 +13,23 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let typingTimer: NodeJS.Timeout;
 
     if (index < text.length) {
-      timer = setTimeout(() => {
+      typingTimer = setTimeout(() => {
         setDisplayText((prev) => prev + text[index]);
         setIndex((prev) => prev + 1);
       }, 50); // Controls the text speed
     }
 
-    return () => clearTimeout(timer);
+    return () => clearTimeout(typingTimer);
   }, [index, text]);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let textTimer: NodeJS.Timeout;
 
     if (index === text.length && loop) {
-      timer = setTimeout(() => {
+      textTimer = setTimeout(() => {
         setDisplayText("");
         setIndex(0);
       }, 5000); // 5 second pause before restarting
