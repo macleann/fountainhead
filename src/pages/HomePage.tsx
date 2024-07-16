@@ -11,7 +11,7 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className='bg-black min-h-screen flex flex-col justify-center items-center p-5 font-tiny5 text-white'>
+    <div className='min-h-screen flex flex-col justify-center items-center p-5 font-tiny5 text-white'>
       <TypewriterEffect text="Are you the root or the worm?" />
       <div className="mt-8 space-x-4">
         <button

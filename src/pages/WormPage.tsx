@@ -6,7 +6,7 @@ const WormPage: React.FC = () => {
     "cabinated freedom path bleakly goes, tumbling, wildly along with complete yada yada yada yada yada yada yada for hopeful impact with concerned citizen invested only in the accounts given by folks living here years earlier while deep toff rolls about within a luxurious bin made there by frequencies which that who whom escaped control and went on to annihilate separate and regulated persons in direct commission with traders previously believed worthy and active in their attempts to partition areas located beyond normal and familiar grounds of restriction.";
   
   return (
-    <div className="bg-black min-h-screen flex flex-col justify-center items-center p-5 text-white">
+    <div className="min-h-screen flex flex-col justify-center items-center p-5 text-white">
       <div className="w-full max-w-2xl">
         <TypewriterEffect text={sentence} loop={true} />
       </div>
