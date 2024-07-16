@@ -9,7 +9,7 @@ const KEY_MAP: { [key: string]: string } = {
 
 const DotMatrix: React.FC = () => {
   const [activeNote, setActiveNote] = useState<string | null>(null);
-  const [baseOctave, setBaseOctave] = useState(4); // Default octave
+  const baseOctave = 4; // Default octave
   const [octaveShift, setOctaveShift] = useState(0);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const DotMatrix: React.FC = () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [baseOctave, octaveShift]);
+  }, [octaveShift]);
 
   // Create an 8x8 grid
   const grid = Array(8).fill(null).map(() => Array(8).fill(null));
