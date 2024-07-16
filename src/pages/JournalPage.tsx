@@ -39,7 +39,7 @@ const JournalPage: React.FC = () => {
   }, [currentEntryIndex, isTypingComplete, visibleEntries.length]);
 
   return (
-    <div className={`bg-black min-h-screen flex flex-col justify-center items-center p-5 text-white`}>
+    <div className="bg-black min-h-screen flex flex-col justify-center items-center p-5 text-white">
       {visibleEntries.slice(0, currentEntryIndex + 1).map((entry, index) => (
         <div key={index} className="mb-8 max-w-2xl">
           {index === currentEntryIndex ? (
