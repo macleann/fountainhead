@@ -72,7 +72,7 @@ const DotMatrix: React.FC<DotMatrixProps> = ({ isTappable }) => {
   };
 
   return (
-    <div className={`fixed inset-0 z-0 ${isTappable ? 'pointer-events-auto' : 'pointer-events-none'} flex items-center justify-center mt-20`}>
+    <div className={`fixed inset-0 z-0 ${isTappable ? 'pointer-events-auto' : 'pointer-events-none'} flex items-center justify-center`}>
       <div className="grid grid-cols-6 gap-2">
         {grid.flat().map((noteWithOctave, index) => (
           <div
@@ -82,7 +82,7 @@ const DotMatrix: React.FC<DotMatrixProps> = ({ isTappable }) => {
               noteWithOctave
                 ? (activeNote === noteWithOctave 
                     ? 'bg-green-500 opacity-100 scale-110' 
-                    : `bg-gray-300 ${isTappable ? 'opacity-50 hover:opacity-75 hover:scale-105' : 'opacity-25'}`)
+                    : `bg-gray-300 ${isTappable ? 'opacity-25 hover:opacity-75 hover:scale-105' : 'opacity-25'}`)
                 : 'bg-transparent'
             } ${isTappable ? 'cursor-pointer' : ''}`}
           />
