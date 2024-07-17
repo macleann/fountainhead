@@ -10,7 +10,7 @@ function App() {
   return (
     <Router>
         <div className="relative min-h-screen bg-black">
-          <DotMatrix />
+          <DotMatrix isTappable={false} />
           <div className="relative z-10">
             <Routes>
               <Route path="/" element={<HomePage />} />
