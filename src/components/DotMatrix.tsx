@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import playTone from './PlayTone';
 
-const NOTES = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'H'];
+const NOTES = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
 const KEY_MAP: { [key: string]: string } = {
   'q': 'A', 'w': 'A#', 'e': 'B', 'r': 'C', 't': 'C#', 'y': 'D',
-  'u': 'D#', 'i': 'E', 'o': 'F', 'p': 'F#', '[': 'G', ']': 'G#', '{': 'G', '}': 'G#', "\\": 'H', '|': 'H'
+  'u': 'D#', 'i': 'E', 'o': 'F', 'p': 'F#', '[': 'G', ']': 'G#', '{': 'G', '}': 'G#'
 };
 
-const DotMatrix: React.FC = () => {
+interface DotMatrixProps {
+  isTappable: boolean;
+}
+
+const DotMatrix: React.FC<DotMatrixProps> = ({ isTappable }) => {
   const [activeNote, setActiveNote] = useState<string | null>(null);
   const baseOctave = 4; // Default octave
   const [octaveShift, setOctaveShift] = useState(0);
@@ -47,35 +51,40 @@ const DotMatrix: React.FC = () => {
     };
   }, [octaveShift]);
 
-  // Create an 8x8 grid
-  const grid = Array(8).fill(null).map(() => Array(8).fill(null));
+  // Create a 6x6 grid
+  const grid = Array(6).fill(null).map(() => Array(6).fill(null));
   let noteIndex = 0;
-  for (let i = 0; i < 8; i++) {
-    for (let j = 0; j < 8; j++) {
-      if (noteIndex < NOTES.length * 3) {
-        const octave = Math.floor(noteIndex / NOTES.length) + 3; // Octaves 3, 4, 5
-        grid[i][j] = `${NOTES[noteIndex % NOTES.length]}-${octave}`;
-        noteIndex++;
-      } else if (noteIndex === NOTES.length * 3) {
-        grid[i][j] = 'red'; // The 40th dot
-        noteIndex++;
-      }
+  for (let i = 0; i < 6; i++) {
+    for (let j = 0; j < 6; j++) {
+      const octave = Math.floor(noteIndex / NOTES.length) + 3; // Octaves 3, 4, 5
+      grid[i][j] = `${NOTES[noteIndex % NOTES.length]}-${octave}`;
+      noteIndex++;
     }
   }
 
+  const handleDotClick = (noteWithOctave: string) => {
+    if (isTappable && noteWithOctave) {
+      const [note, octave] = noteWithOctave.split('-');
+      setActiveNote(noteWithOctave);
+      playTone(note, parseInt(octave));
+      setTimeout(() => setActiveNote(null), 300); // Reset after 300ms
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center mt-20">
-      <div className="grid grid-cols-8 gap-2">
+    <div className={`fixed inset-0 z-0 ${isTappable ? 'pointer-events-auto' : 'pointer-events-none'} flex items-center justify-center mt-20`}>
+      <div className="grid grid-cols-6 gap-2">
         {grid.flat().map((noteWithOctave, index) => (
           <div
             key={index}
-            className={`w-10 h-10 ${
-              noteWithOctave === 'red'
-                ? 'bg-red-500 opacity-50'
-                : noteWithOctave 
-                  ? (activeNote === noteWithOctave ? 'bg-green-500 opacity-100' : 'bg-gray-300 opacity-25')
-                  : 'bg-transparent'
-            }`}
+            onClick={() => handleDotClick(noteWithOctave)}
+            className={`w-10 h-10 transition-all duration-150 ${
+              noteWithOctave
+                ? (activeNote === noteWithOctave 
+                    ? 'bg-green-500 opacity-100 scale-110' 
+                    : `bg-gray-300 ${isTappable ? 'opacity-50 hover:opacity-75 hover:scale-105' : 'opacity-25'}`)
+                : 'bg-transparent'
+            } ${isTappable ? 'cursor-pointer' : ''}`}
           />
         ))}
       </div>
