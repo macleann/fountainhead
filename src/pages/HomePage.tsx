@@ -12,7 +12,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className='min-h-screen flex flex-col justify-center items-center p-5 font-tiny5 text-white'>
-      <TypewriterEffect text="Are you the root or the worm?" />
+      <TypewriterEffect text="are you the root or the worm?" />
       <div className="mt-8 space-x-4">
         <button
           className="border border-white px-5 py-2 hover:bg-white hover:text-black transition-colors duration-200"
