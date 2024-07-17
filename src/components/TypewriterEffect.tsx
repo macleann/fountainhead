@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
 
+interface SpecialWord {
+  word: string;
+  className: string;
+  onClick: (word: string) => void;
+}
+
 interface TypewriterEffectProps {
   text: string;
   loop?: boolean;
-  onWordClick?: (word: string) => void;
+  specialWords?: SpecialWord[];
 }
 
 const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
   text,
   loop = false,
-  onWordClick
+  specialWords = [],
 }) => {
   const [displayText, setDisplayText] = useState("");
   const [index, setIndex] = useState(0);
@@ -38,11 +44,20 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
     }
   }, [index, text.length, loop]);
 
-  // Handle word click
-  const handleWordClick = (word: string) => {
-    if (onWordClick) {
-      onWordClick(word);
+  const renderWord = (word: string, key: number) => {
+    const specialWord = specialWords.find(sw => sw.word.toLowerCase() === word.toLowerCase());
+    if (specialWord) {
+      return (
+        <span 
+          key={key}
+          onClick={() => specialWord.onClick(word)}
+          className={`cursor-pointer ${specialWord.className}`}
+        >
+          {word}
+        </span>
+      );
     }
+    return <span key={key}>{word}</span>;
   };
 
   return (
@@ -55,17 +70,10 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
         const word = trimmedPart.replace(/[.,!?;:]$/, '');
         const punctuation = trimmedPart.slice(word.length);
         return (
-          <span key={index}>
-            <span 
-              onClick={() => handleWordClick(word)}
-              className={`${
-                word.toLowerCase() === 'scales' ? 'cursor-pointer transition-colors duration-200 text-green-500' : ''
-              }`}
-            >
-              {word}
-            </span>
+          <React.Fragment key={index}>
+            {renderWord(word, index)}
             {punctuation}
-          </span>
+          </React.Fragment>
         );
       })}
       <span className="absolute w-2 h-5 bg-white ml-1 animate-blink"></span>
