@@ -9,6 +9,8 @@ interface RegisterFormProps {
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ onClose, onSwitchForm }) => {
     const [username, setUsername] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { register } = useAuth();
@@ -17,7 +19,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onClose, onSwitchForm }) =>
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await register({ username, email, password, game_state: gameState });
+            const response = await register({ username, firstName, lastName, email, password, game_state: gameState });
             if (response && response.game_state) {
                 await updateGameState(response.game_state);
             }
@@ -31,21 +33,35 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onClose, onSwitchForm }) =>
         <form onSubmit={handleRegister} className="space-y-4">
             <input
                 type="text"
-                placeholder="Username"
+                placeholder="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full p-2 bg-black text-white border border-white"
             />
             <input
+                type="text"
+                placeholder="first name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="w-full p-2 bg-black text-white border border-white"
+            />
+            <input
+                type="text"
+                placeholder="last name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="w-full p-2 bg-black text-white border border-white"
+            />
+            <input
                 type="email"
-                placeholder="Email"
+                placeholder="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full p-2 bg-black text-white border border-white"
             />
             <input
                 type="password"
-                placeholder="Password"
+                placeholder="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-2 bg-black text-white border border-white"

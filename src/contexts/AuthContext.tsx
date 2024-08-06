@@ -5,6 +5,8 @@ import { getCSRFToken } from '../utils/csrf';
 interface User {
   id: number;
   username: string;
+  firstName: string;
+  lastName: string;
   email: string;
 }
 
@@ -14,7 +16,7 @@ interface AuthContextType {
   user: User | null;
   login: (username: string, password: string) => Promise<{ user: User; game_state: GameState }>;
   logout: () => Promise<void>;
-  register: (userData: { username: string; email: string; password: string; game_state?: GameState }) => Promise<{ user: User; game_state: GameState }>;
+  register: (userData: { username: string; firstName: string; lastName: string; email: string; password: string; game_state?: GameState }) => Promise<{ user: User; game_state: GameState }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -42,7 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       delete api.defaults.headers.common['X-CSRFToken'];
     };
   
-    const register = async (userData: { username: string; email: string; password: string; game_state?: GameState }) => {
+    const register = async (userData: { username: string; firstName: string; lastName: string; email: string; password: string; game_state?: GameState }) => {
       const response = await api.post('/register', userData);
       setUser(response.data.user);
       api.defaults.headers.common['X-CSRFToken'] = getCSRFToken();
