@@ -2,12 +2,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import TypewriterEffect from "../components/TypewriterEffect";
+import { useGameState } from "../contexts/GameStateContext";
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
+  const { gameState, setGameState } = useGameState();
 
   const handleChoice = (choice: "root" | "worm") => {
     navigate(`/${choice}`);
+    setGameState(
+      gameState ? { ...gameState, "root_or_worm": choice } : { "root_or_worm": choice }
+    )
   };
 
   return (
