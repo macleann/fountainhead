@@ -16,7 +16,7 @@ import NotFoundPage from './pages/404Page';
 
 function App() {
   // const [isTappable, setIsTappable] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  // const [isVisible, setIsVisible] = useState(false);
 
   return (
     <AuthProvider>
