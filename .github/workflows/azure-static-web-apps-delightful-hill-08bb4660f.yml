@@ -33,7 +33,7 @@ jobs:
           output_location: "build" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
         env:
-          REACT_APP_API_URL: https://fountainheadapi.greenmoss-cf945a13.eastus.azurecontainerapps.io
+          REACT_APP_API_URL: https://api.fountainhead.world
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
