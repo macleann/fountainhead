@@ -34,7 +34,7 @@ const playTone = (note: string, octave: number) => {
   const oscillator = audioContext.createOscillator();
   const gainNode = audioContext.createGain();
 
-  oscillator.type = 'sine';
+  oscillator.type = 'square';
   oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
 
   gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);

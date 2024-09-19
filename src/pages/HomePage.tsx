@@ -4,16 +4,22 @@ import { useNavigate } from "react-router-dom";
 import TypewriterEffect from "../components/TypewriterEffect";
 import { useGameState } from "../contexts/GameStateContext";
 
-const HomePage: React.FC = () => {
+interface HomePageProps {
+  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const HomePage: React.FC<HomePageProps> = ({ setIsVisible }) => {
   const navigate = useNavigate();
   const { gameState, setGameState } = useGameState();
 
   const handleChoice = (choice: "root" | "worm") => {
-    navigate(`/${choice}`);
+    navigate('/hedgepath');
     setGameState(
       gameState ? { ...gameState, "root_or_worm": choice } : { "root_or_worm": choice }
     )
   };
+
+  setIsVisible(true);
 
   return (
     <div className='min-h-screen flex flex-col justify-center items-center p-5 font-tiny5 text-white'>

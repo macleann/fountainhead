@@ -3,15 +3,17 @@ import playTone from './PlayTone';
 
 const NOTES = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
 const KEY_MAP: { [key: string]: string } = {
-  'q': 'A', 'w': 'A#', 'e': 'B', 'r': 'C', 't': 'C#', 'y': 'D',
-  'u': 'D#', 'i': 'E', 'o': 'F', 'p': 'F#', '[': 'G', ']': 'G#', '{': 'G', '}': 'G#'
+  'a': 'A', 'w': 'A#', 's': 'B', 'd': 'C', 'r': 'C#', 'f': 'D',
+  't': 'D#', 'g': 'E', 'h': 'F', 'u': 'F#', 'j': 'G', 'i': 'G#'
 };
 
 interface DotMatrixProps {
   isTappable: boolean;
+  isVisible: boolean;
+  isPlayable?: boolean;
 }
 
-const DotMatrix: React.FC<DotMatrixProps> = ({ isTappable }) => {
+const DotMatrix: React.FC<DotMatrixProps> = ({ isTappable, isVisible }) => {
   const [activeNote, setActiveNote] = useState<string | null>(null);
   const baseOctave = 4; // Default octave
   const [octaveShift, setOctaveShift] = useState(0);
@@ -22,10 +24,10 @@ const DotMatrix: React.FC<DotMatrixProps> = ({ isTappable }) => {
       const note = KEY_MAP[key];
       
       // Handle octave shifts
-      if (key === 'a') {
-        setOctaveShift(1);
-      } else if (key === 'b') {
-        setOctaveShift(-1);
+      if (key === 'z') {
+        setOctaveShift(prevShift => Math.max(prevShift - 1, -1)); // Limit downward shift
+      } else if (key === 'x') {
+        setOctaveShift(prevShift => Math.min(prevShift + 1, 1)); // Limit upward shift
       }
 
       if (note) {
@@ -35,10 +37,6 @@ const DotMatrix: React.FC<DotMatrixProps> = ({ isTappable }) => {
     };
 
     const handleKeyUp = (event: KeyboardEvent) => {
-      const key = event.key.toLowerCase();
-      if (key === 'a' || key === 'b') {
-        setOctaveShift(0);
-      }
       setActiveNote(null);
     };
 
@@ -71,6 +69,9 @@ const DotMatrix: React.FC<DotMatrixProps> = ({ isTappable }) => {
     }
   };
 
+  if (!isVisible) {
+    return null;
+  }
   return (
     <div className={`fixed inset-0 z-0 ${isTappable ? 'pointer-events-auto' : 'pointer-events-none'} flex items-center justify-center`}>
       <div className="grid grid-cols-6 gap-2">

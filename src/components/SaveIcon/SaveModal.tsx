@@ -9,7 +9,7 @@ interface SaveModalProps {
 }
 
 const SaveModal: React.FC<SaveModalProps> = ({ isLoggedIn, onClose }) => {
-    const [isLoginForm, setIsLoginForm] = useState(true);
+    const [isLoginForm, setIsLoginForm] = useState(false);
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
