@@ -1,22 +1,22 @@
 import React from 'react';
-import { useNavigate } from "react-router-dom";
-import outsideTape from '../images/Tape Fountainhead-0000021.jpg';
-import insideTape from '../images/Tape Fountainhead-0000013.jpg';
-import cd from '../images/Tape Fountainhead-0000052.jpg';
+// import { useNavigate } from "react-router-dom";
+// import outsideTape from '../images/Tape Fountainhead-0000021.jpg';
+// import insideTape from '../images/Tape Fountainhead-0000013.jpg';
+// import cd from '../images/Tape Fountainhead-0000052.jpg';
 import boatman from '../images/Video.mov';
 
-interface LandingPageProps {
-    setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
-}
+// interface LandingPageProps {
+//     setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+// }
 
-const LandingPage: React.FC<LandingPageProps> = ({ setIsVisible }) => {
-    const navigate = useNavigate();
+const LandingPage: React.FC = () => {
+    // const navigate = useNavigate();
 
-    const handleClick = () => {
-        navigate('/game');
-    }
+    // const handleClick = () => {
+    //     navigate('/game');
+    // }
 
-    setIsVisible(false);
+    // setIsVisible(false);
 
     return (
         <div className="flex flex-col justify-between items-center min-h-screen bg-black p-8">
@@ -27,7 +27,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ setIsVisible }) => {
             <iframe
                 style={{border: 0, width: 480, height: 650}}
                 src="https://bandcamp.com/EmbeddedPlayer/album=4238437936/size=large/bgcol=333333/linkcol=2ebd35/tracklist=false/transparent=true/"
-                seamless>
+                seamless
+                title='Fountainhead Bandcamp album embed'>
                     <a href="https://volunteerdepartment.bandcamp.com/album/fountainhead">Fountainhead by Volunteer Department</a>
             </iframe>
             <video src={boatman} autoPlay loop muted className='mb-8' />
