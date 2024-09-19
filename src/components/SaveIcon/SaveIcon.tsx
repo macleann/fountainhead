@@ -1,15 +1,30 @@
 import React, { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import SaveModal from "./SaveModal";
+import RootOrWormModal from "./RootOrWormModal";
 
 const SaveIcon: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRootOrWormModalOpen, setIsRootOrWormModalOpen] = useState(false);
   const { user } = useAuth();
+
+  const handleIconClick = () => {
+    if (user) {
+      setIsModalOpen(true);
+    } else {
+      setIsRootOrWormModalOpen(true);
+    }
+  };
+
+  const handleRootOrWormChoice = () => {
+    setIsRootOrWormModalOpen(false);
+    setIsModalOpen(true);
+  };
 
   return (
     <>
       <button
-        onClick={() => setIsModalOpen(true)}
+        onClick={handleIconClick}
         className="fixed top-4 right-4 z-50 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
       >
         <svg
@@ -19,7 +34,7 @@ const SaveIcon: React.FC = () => {
           id="Layer_1"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 64 64"
-          enable-background="new 0 0 64 64"
+          enableBackground="new 0 0 64 64"
         >
           <g id="Floppy-disk">
             <path d="M35.2673988,6.0411h-7.9999981v10h7.9999981V6.0411z M33.3697014,14.1434002h-4.2046013V7.9387999h4.2046013V14.1434002z" />
@@ -45,6 +60,12 @@ const SaveIcon: React.FC = () => {
       {isModalOpen && (
         <SaveModal isLoggedIn={!!user} onClose={() => setIsModalOpen(false)} />
       )}
+
+      <RootOrWormModal
+        isOpen={isRootOrWormModalOpen}
+        onClose={() => setIsRootOrWormModalOpen(false)}
+        onChoice={handleRootOrWormChoice}
+      />
     </>
   );
 };
