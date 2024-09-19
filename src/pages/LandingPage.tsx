@@ -21,15 +21,16 @@ const LandingPage: React.FC = () => {
     return (
         <div className="flex flex-col justify-between items-center min-h-screen bg-black p-8">
             <div className="flex flex-col items-center">
-                <h1 className="text-white text-5xl mb-8">VOLUNTEER DEPARTMENT</h1>
+                <h1 className="text-white text-5xl mb-8 text-center">VOLUNTEER DEPARTMENT</h1>
                 <h2 className="text-white text-3xl mb-10">FOUNTAINHEAD</h2>
             </div>
             <iframe
-                style={{border: 0, width: 480, height: 650}}
+                className="w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[650px] max-w-[480px] mb-10 border-0"
                 src="https://bandcamp.com/EmbeddedPlayer/album=4238437936/size=large/bgcol=333333/linkcol=2ebd35/tracklist=false/transparent=true/"
                 seamless
-                title='Fountainhead Bandcamp album embed'>
-                    <a href="https://volunteerdepartment.bandcamp.com/album/fountainhead">Fountainhead by Volunteer Department</a>
+                title="Fountainhead Bandcamp album embed"
+                >
+                <a href="https://volunteerdepartment.bandcamp.com/album/fountainhead">Fountainhead by Volunteer Department</a>
             </iframe>
             <video src={boatman} autoPlay loop muted className='mb-8' />
             {/* <div className="flex flex-col items-center">
