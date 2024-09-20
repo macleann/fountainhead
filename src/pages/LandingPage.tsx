@@ -47,7 +47,7 @@ const LandingPage: React.FC = () => {
         { title: 'Memory Field', content: "You'll need to go through the Pleasure Garden…" },
         { title: 'The Dream in LA', content: "File not found. Please visit the Memory Field." },
         { title: 'The Static', content: "You'll need to speak with Old Friend before you go into the static" },
-        { title: 'Give Me Strength for Tomorrow', content: "Work towards the things that towards you. Take your Time. You got this - VD" },
+        { title: 'Give Me Strength for Tomorrow', content: "Work towards the things that work towards you. Take your Time. You got this - VD" },
         { title: 'Free Merch Bundle of Champion', content: "Hmm. I don't see a sword or a spool of thread in your inventory. Please complete fountain.world before claiming the Merch Bundle of Champion." },
     ];
 
