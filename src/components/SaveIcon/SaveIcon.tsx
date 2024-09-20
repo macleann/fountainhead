@@ -16,10 +16,10 @@ const SaveIcon: React.FC = () => {
     }
   };
 
-  const handleRootOrWormChoice = () => {
-    setIsRootOrWormModalOpen(false);
-    setIsModalOpen(true);
-  };
+  // const handleRootOrWormChoice = () => {
+  //   setIsRootOrWormModalOpen(false);
+  //   setIsModalOpen(true);
+  // };
 
   return (
     <>
@@ -64,7 +64,7 @@ const SaveIcon: React.FC = () => {
       <RootOrWormModal
         isOpen={isRootOrWormModalOpen}
         onClose={() => setIsRootOrWormModalOpen(false)}
-        onChoice={handleRootOrWormChoice}
+        // onChoice={handleRootOrWormChoice}
       />
     </>
   );
