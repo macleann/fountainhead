@@ -1,25 +1,12 @@
 import React, { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import SaveModal from "./SaveModal";
-import RootOrWormModal from "./RootOrWormModal";
 
 const SaveIcon: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isRootOrWormModalOpen, setIsRootOrWormModalOpen] = useState(false);
   const { user } = useAuth();
 
-  const handleIconClick = () => {
-    if (user) {
-      setIsModalOpen(true);
-    } else {
-      setIsRootOrWormModalOpen(true);
-    }
-  };
-
-  // const handleRootOrWormChoice = () => {
-  //   setIsRootOrWormModalOpen(false);
-  //   setIsModalOpen(true);
-  // };
+  const handleIconClick = () => { setIsModalOpen(true) };
 
   return (
     <>
@@ -60,12 +47,6 @@ const SaveIcon: React.FC = () => {
       {isModalOpen && (
         <SaveModal isLoggedIn={!!user} onClose={() => setIsModalOpen(false)} />
       )}
-
-      <RootOrWormModal
-        isOpen={isRootOrWormModalOpen}
-        onClose={() => setIsRootOrWormModalOpen(false)}
-        // onChoice={handleRootOrWormChoice}
-      />
     </>
   );
 };
