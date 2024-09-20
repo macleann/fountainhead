@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 // import { useNavigate } from "react-router-dom";
 // import outsideTape from '../images/Tape Fountainhead-0000021.jpg';
 // import insideTape from '../images/Tape Fountainhead-0000013.jpg';
@@ -12,8 +12,28 @@ import Modal from '../components/Modal';
 
 const LandingPage: React.FC = () => {
     // const navigate = useNavigate();
-    const isMobile = window.innerWidth < 768;
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
     const [modalContent, setModalContent] = useState({ isOpen: false, title: '', content: '' });
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+        const playVideo = async () => {
+            if (videoRef.current) {
+                try {
+                    await videoRef.current.play();
+                } catch (error) {
+                    console.error("Autoplay failed:", error);
+                }
+            }
+        };
+        playVideo();
+    }, []);
 
     // const handleClick = () => {
     //     navigate('/game');
@@ -43,7 +63,7 @@ const LandingPage: React.FC = () => {
         return links.slice(start, end).map((link, index) => (
             <p 
                 key={index + start} 
-                className={`text-white cursor-pointer hover:text-green-500 mt-2 mb-4 text-${alignment}`}
+                className={`text-white cursor-pointer hover:text-green-500 mt-2 mb-4`}
                 style={{textAlign: alignment}}
                 onClick={() => openModal(link.title, link.content)}
             >
@@ -60,7 +80,16 @@ const LandingPage: React.FC = () => {
             </div>
             {isMobile ? (
                 <>
-                    <video src={boatman} autoPlay loop muted className='mb-4 w-full' />
+                    <video 
+                        ref={videoRef}
+                        src={boatman} 
+                        autoPlay 
+                        loop 
+                        muted 
+                        playsInline
+                        controls
+                        className='mb-4 w-full' 
+                    />
                     <div className="flex justify-between w-full mb-10">
                         <div className="flex flex-col w-1/2 text-s text-wrap">{renderLinks(0, 4, 'center')}</div>
                         <div className="flex flex-col w-1/2 text-s text-wrap">{renderLinks(4, 7, 'center')}</div>
@@ -69,7 +98,16 @@ const LandingPage: React.FC = () => {
             ) : (
                 <div className="flex justify-between items-center w-full mb-10">
                     <div className="flex flex-col w-1/4 text-s text-wrap">{renderLinks(0, 4, 'right')}</div>
-                    <video src={boatman} autoPlay loop muted className='mx-4' />
+                    <video 
+                        ref={videoRef}
+                        src={boatman} 
+                        autoPlay 
+                        loop 
+                        muted 
+                        playsInline
+                        controls
+                        className='mx-4' 
+                    />
                     <div className="flex flex-col w-1/4 text-s text-wrap">{renderLinks(4, 7, 'left')}</div>
                 </div>
             )}
