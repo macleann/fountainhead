@@ -44,6 +44,7 @@ const LandingPage: React.FC = () => {
             <p 
                 key={index + start} 
                 className={`text-white cursor-pointer hover:text-green-500 mt-2 mb-4 text-${alignment}`}
+                style={{textAlign: alignment}}
                 onClick={() => openModal(link.title, link.content)}
             >
                 {link.title}
