@@ -87,7 +87,6 @@ const LandingPage: React.FC = () => {
                         loop 
                         muted 
                         playsInline
-                        controls
                         className='mb-4 w-full' 
                     />
                     <div className="flex justify-between w-full mb-10">
@@ -105,7 +104,6 @@ const LandingPage: React.FC = () => {
                         loop 
                         muted 
                         playsInline
-                        controls
                         className='mx-4' 
                     />
                     <div className="flex flex-col w-1/4 text-s text-wrap">{renderLinks(4, 7, 'left')}</div>
