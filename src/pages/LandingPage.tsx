@@ -67,9 +67,9 @@ const LandingPage: React.FC = () => {
                 </>
             ) : (
                 <div className="flex justify-between items-center w-full mb-10">
-                    <div className="flex flex-col w-1/3ad text-s text-wrap">{renderLinks(0, 4, 'right')}</div>
+                    <div className="flex flex-col w-1/4 text-s text-wrap">{renderLinks(0, 4, 'right')}</div>
                     <video src={boatman} autoPlay loop muted className='mx-4' />
-                    <div className="flex flex-col w-1/3ad text-s text-wrap">{renderLinks(4, 7, 'left')}</div>
+                    <div className="flex flex-col w-1/4 text-s text-wrap">{renderLinks(4, 7, 'left')}</div>
                 </div>
             )}
             {/* <iframe
