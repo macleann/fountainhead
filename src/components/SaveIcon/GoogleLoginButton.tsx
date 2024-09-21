@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useGameState } from '../../contexts/GameStateContext';
 
@@ -8,10 +8,25 @@ declare global {
   }
 }
 
-const GoogleLoginButton: React.FC = () => {
+interface GoogleLoginButtonProps {
+  onLoginSuccess?: () => void;
+}
+
+const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ onLoginSuccess }) => {
   const { googleAuthenticate } = useAuth();
   const { gameState } = useGameState();
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const handleCredentialResponse = useCallback(async (response: any) => {
+    try {
+      await googleAuthenticate(response.credential, gameState);
+      if (onLoginSuccess) {
+        onLoginSuccess();
+      }
+    } catch (error) {
+      console.error('Google authentication failed:', error);
+    }
+  }, [googleAuthenticate, gameState, onLoginSuccess]);
 
   useEffect(() => {
     if (window.google) {
@@ -20,15 +35,7 @@ const GoogleLoginButton: React.FC = () => {
         callback: handleCredentialResponse,
       });
     }
-  }, []);
-
-  const handleCredentialResponse = async (response: any) => {
-    try {
-      await googleAuthenticate(response.credential, gameState);
-    } catch (error) {
-      console.error('Google authentication failed:', error);
-    }
-  };
+  }, [handleCredentialResponse]);
 
   const handleGoogleSignIn = () => {
     if (window.google && window.google.accounts && window.google.accounts.id) {
