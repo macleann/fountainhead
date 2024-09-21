@@ -34,6 +34,7 @@ jobs:
           ###### End of Repository/Build Configurations ######
         env:
           REACT_APP_API_URL: https://api.fountainhead.world
+          REACT_APP_GOOGLE_CLIENT_ID: 1087522024238-b45s68te9l3dfu9ah9i1naat2876s91b.apps.googleusercontent.com
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

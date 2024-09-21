@@ -34,8 +34,8 @@ function App() {
                   <Route path="/hedgepath" element={<HedgeEntrancePage />} />
                   <Route path="/root" element={<RootPage setIsTappable={setIsTappable} />} />
                   <Route path="/worm" element={<WormPage />} />
-                  <Route path="/journal" element={<JournalPage />} />
-                  <Route path="/oldfriend" element={<OldFriendChatPage />} /> */}
+                  <Route path="/journal" element={<JournalPage />} /> */}
+                  {/* <Route path="/oldfriend" element={<OldFriendChatPage />} /> */}
                 </Routes>
               </div>
             </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useGameState } from '../../contexts/GameStateContext';
 
@@ -7,8 +8,9 @@ interface SaveConfirmationProps {
 }
 
 const SaveConfirmation: React.FC<SaveConfirmationProps> = ({ onClose }) => {
-    const { gameState, lastSave, updateGameState, clearGameState } = useGameState();
+    const { gameState, setGameState, lastSave, updateGameState, clearGameState } = useGameState();
     const { logout } = useAuth();
+    const navigate = useNavigate();
     const lastSaveDate = new Date(lastSave).toLocaleString();
 
     const handleSave = async () => {
@@ -20,6 +22,8 @@ const SaveConfirmation: React.FC<SaveConfirmationProps> = ({ onClose }) => {
 
     const handleClear = async () => {
         await clearGameState();
+        setGameState({})
+        navigate('/');
         onClose();
     }
 

@@ -32,6 +32,7 @@ export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     try {
       const response = await api.put('/game-state', { game_state: newState });
       setGameState(response.data.state);
+      setLastSave(new Date(response.data.last_updated));
     } catch (error) {
       console.error('Failed to update game state:', error);
     }
@@ -39,8 +40,9 @@ export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   const clearGameState = async () => {
     try {
-      await api.post('/game-state/clear');
-      setGameState(null);
+      const response = await api.post('/game-state/clear');
+      setGameState(response.data.state);
+      setLastSave(new Date(response.data.last_updated));
     } catch (error) {
       console.error('Failed to clear game state:', error);
     }

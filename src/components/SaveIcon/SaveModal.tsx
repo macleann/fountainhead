@@ -16,7 +16,7 @@ const SaveModal: React.FC<SaveModalProps> = ({ isLoggedIn, onClose }) => {
             <div className="bg-black border border-white w-80">
                 <div className="bg-white px-2 py-1 flex justify-between items-center">
                     <span className="text-black text-sm">
-                        {isLoggedIn ? 'Save Game' : (isLoginForm ? 'Login' : 'Register')}
+                        {isLoggedIn ? 'Save Game' : (isLoginForm ? 'Login to restore progress' : 'Register to save progress')}
                     </span>
                     <button onClick={onClose} className="text-black">
                         ✕
@@ -26,9 +26,9 @@ const SaveModal: React.FC<SaveModalProps> = ({ isLoggedIn, onClose }) => {
                     {isLoggedIn ? (
                         <SaveConfirmation onClose={onClose} />
                     ) : isLoginForm ? (
-                        <LoginForm onClose={onClose} onSwitchForm={() => setIsLoginForm(false)} />
+                        <LoginForm onSwitchForm={() => setIsLoginForm(false)} />
                     ) : (
-                        <RegisterForm onClose={onClose} onSwitchForm={() => setIsLoginForm(true)} />
+                        <RegisterForm onSwitchForm={() => setIsLoginForm(true)} />
                     )}
                 </div>
             </div>
