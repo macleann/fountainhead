@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../services/api';
+import { useGameState } from './GameStateContext';
 
 interface User {
   id: number;
@@ -25,6 +26,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+  const { setGameState } = useGameState();
 
   useEffect(() => {
     if (token) {
@@ -46,6 +48,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('token', response.data.access);
     api.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
     setUser(response.data.user);
+    setGameState(response.data.game_state.state);
     return response.data;
   };
 
@@ -55,6 +58,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setToken(null);
     localStorage.removeItem('token');
     delete api.defaults.headers.common['Authorization'];
+    setGameState(null);
   };
 
   const register = async (userData: { username: string; firstName: string; lastName: string; email: string; password: string; game_state?: GameState }) => {
@@ -63,6 +67,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('token', response.data.access);
     api.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
     setUser(response.data.user);
+    setGameState(response.data.game_state.state);
     return response.data;
   };
 
@@ -72,6 +77,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('token', response.data.access);
     api.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
     setUser(response.data.user);
+    setGameState(response.data.game_state.state);
     return response.data;
   };
 

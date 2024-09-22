@@ -23,14 +23,15 @@ export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     // Fetch initial game state
     api.get('/game-state')
       .then(response => {
-        setGameState(response.data.state)
-        setLastSave(new Date(response.data.last_updated));})
+        setGameState(response.data.state);
+        setLastSave(new Date(response.data.last_updated));
+      })
       .catch(error => console.error('Failed to fetch game state:', error));
   }, []);
 
   const updateGameState = async (newState: GameState) => {
     try {
-      const response = await api.put('/game-state', { game_state: newState });
+      const response = await api.post('/game-state', { game_state: newState });
       setGameState(response.data.state);
       setLastSave(new Date(response.data.last_updated));
     } catch (error) {

@@ -19,8 +19,8 @@ function App() {
   // const [isVisible, setIsVisible] = useState(false);
 
   return (
-    <AuthProvider>
-      <GameStateProvider>
+    <GameStateProvider>
+      <AuthProvider>
         <ChatProvider>
           <Router>
             <div className="relative min-h-screen bg-black font-tiny5 h-full">
@@ -41,8 +41,8 @@ function App() {
             </div>
           </Router>
         </ChatProvider>
-      </GameStateProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </GameStateProvider>
   );
 }
 
