@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../services/api';
 
-type GameState = any;
+export type GameState = {};
 
 interface GameStateContextType {
   gameState: GameState;
@@ -16,7 +16,7 @@ const defaultDate = new Date('2024-09-19T00:00:00Z');
 const GameStateContext = createContext<GameStateContextType | undefined>(undefined);
 
 export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [gameState, setGameState] = useState<GameState>(null);
+  const [gameState, setGameState] = useState<GameState>({});
   const [lastSave, setLastSave] = useState<Date>(defaultDate);
 
   useEffect(() => {

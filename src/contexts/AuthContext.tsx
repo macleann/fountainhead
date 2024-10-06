@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../services/api';
-import { useGameState } from './GameStateContext';
+import { GameState, useGameState } from './GameStateContext';
 
 interface User {
   id: number;
@@ -9,8 +9,6 @@ interface User {
   lastName: string;
   email: string;
 }
-
-type GameState = any;
 
 interface AuthContextType {
   user: User | null;
@@ -58,7 +56,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setToken(null);
     localStorage.removeItem('token');
     delete api.defaults.headers.common['Authorization'];
-    setGameState(null);
+    setGameState({});
   };
 
   const register = async (userData: { username: string; firstName: string; lastName: string; email: string; password: string; game_state?: GameState }) => {
