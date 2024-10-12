@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import outsideTape from '../images/Tape Fountainhead-0000021.jpg';
 // import insideTape from '../images/Tape Fountainhead-0000013.jpg';
 // import cd from '../images/Tape Fountainhead-0000052.jpg';
 import boatman from '../images/Video.mov';
 import Modal from '../components/Modal';
 
-// interface LandingPageProps {
-//     setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
-// }
+interface LandingPageProps {
+    setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const LandingPage: React.FC = () => {
-    // const navigate = useNavigate();
+const LandingPage: React.FC<LandingPageProps> = ({ setIsVisible }) => {
+    const navigate = useNavigate();
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
     const [modalContent, setModalContent] = useState({ isOpen: false, title: '', content: '' });
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -35,11 +35,11 @@ const LandingPage: React.FC = () => {
         playVideo();
     }, []);
 
-    // const handleClick = () => {
-    //     navigate('/game');
-    // }
+    const handleClick = () => {
+        navigate('/game');
+    }
 
-    // setIsVisible(false);
+    setIsVisible(false);
 
     const links = [
         { title: 'Lyrics', content: "You'll need a petal from the Pleasure Garden to access this…" },
@@ -137,17 +137,18 @@ const LandingPage: React.FC = () => {
                     className="max-w-l md:max-w-3xl h-auto mb-8"
                 />
             </div> */}
-            {/* <button 
-                className="text-white text-xl py-4 px-8 border border-white hover:bg-white hover:text-black transition-colors duration-300"
-                onClick={handleClick}
-            >
-                ENTER FOUNTAINHEAD
-            </button> */}
+            
             <div className="flex flex-col items-center mb-10">
-                <p className="text-white text-xl text-center">
+                <p className="mb-6 text-white text-xl text-center">
                     where did you <a href='https://volunteerdepartment.bandcamp.com/album/fountainhead' className='text-green-500'>go</a>, champion?
                 </p>
-            </div> 
+                <button 
+                    className="text-white text-xl py-4 px-8 border border-white hover:bg-white hover:text-black transition-colors duration-300"
+                    onClick={handleClick}
+                >
+                    ENTER PLSR GRDN
+                </button>
+            </div>
             <div className="flex flex-col items-center">
                 <p className="text-white text-xs text-center">
                     © 2024 Volunteer Department, All rights reserved

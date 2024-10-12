@@ -19,8 +19,6 @@ const HomePage: React.FC<HomePageProps> = ({ setIsVisible }) => {
     )
   };
 
-  setIsVisible(true);
-
   return (
     <div className='min-h-screen flex flex-col justify-center items-center p-5 font-tiny5 text-white'>
       <TypewriterEffect text="are you the root or the worm?" />
