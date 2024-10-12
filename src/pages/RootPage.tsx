@@ -10,16 +10,16 @@ const RootPage: React.FC<RootPageProps> = ({ setIsTappable }) => {
   const sentence =
     "four weeks ago in flagstaff i met a man who considered himself a dragon and so displayed scales, each laden with a poultice created with solved forms of extra-intrinsical abolishment. deeply concerned for the man's wellbeing i produced a blindfold from the inner pocket of my best jacket and wrestled him to the ground.";
 
-  const specialWords = [
-    {
-      word: "scales",
-      className: "transition-colors duration-200 text-green-500",
-      onClick: () => {
-        setIsTappable(true);
-        setShowDotMatrix(true);
-      }
-    }
-  ];
+  // const specialWords = [
+  //   {
+  //     word: "scales",
+  //     className: "transition-colors duration-200 text-green-500",
+  //     onClick: () => {
+  //       setIsTappable(true);
+  //       setShowDotMatrix(true);
+  //     }
+  //   }
+  // ];
 
   const handleCloseDotMatrix = () => {
     setIsTappable(false);
@@ -40,8 +40,8 @@ const RootPage: React.FC<RootPageProps> = ({ setIsTappable }) => {
           <div className="w-full max-w-2xl">
             <TypewriterEffect 
               text={sentence} 
-              loop={true} 
-              specialWords={specialWords}
+              // loop={true} 
+              // specialWords={specialWords}
             />
           </div>
         </div>

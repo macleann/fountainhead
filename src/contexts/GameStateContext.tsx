@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../services/api';
 
-export type GameState = {};
+export type GameState = {
+  [key: string]: any;
+};
 
 interface GameStateContextType {
   gameState: GameState;

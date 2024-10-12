@@ -8,7 +8,7 @@ const WormPage: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-5 text-white">
       <div className="w-full max-w-2xl">
-        <TypewriterEffect text={sentence} loop={true} />
+        <TypewriterEffect text={sentence} /* loop={true} */ />
       </div>
     </div>
   );

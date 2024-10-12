@@ -36,7 +36,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ setIsVisible }) => {
     }, []);
 
     const handleClick = () => {
-        navigate('/game');
+        navigate('/prologue');
     }
 
     setIsVisible(false);
