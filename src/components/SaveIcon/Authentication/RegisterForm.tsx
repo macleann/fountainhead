@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
-import { useGameState } from '../../contexts/GameStateContext';
+import { useAuth } from '../../../contexts/AuthContext';
+import { useGameState } from '../../../contexts/GameStateContext';
 import GoogleLoginButton from './GoogleLoginButton';
 
 interface RegisterFormProps {

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useCallback } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
-import { useGameState } from '../../contexts/GameStateContext';
+import { useAuth } from '../../../contexts/AuthContext';
+import { useGameState } from '../../../contexts/GameStateContext';
 
 declare global {
   interface Window {
