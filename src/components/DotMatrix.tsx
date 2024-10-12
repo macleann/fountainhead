@@ -30,7 +30,7 @@ const DotMatrix: React.FC<DotMatrixProps> = ({ isTappable, isVisible }) => {
         setOctaveShift(prevShift => Math.min(prevShift + 1, 1)); // Limit upward shift
       }
 
-      if (note) {
+      if (note && isVisible) {
         setActiveNote(`${note}-${baseOctave + octaveShift}`);
         playTone(note, baseOctave + octaveShift);
       }
@@ -47,7 +47,7 @@ const DotMatrix: React.FC<DotMatrixProps> = ({ isTappable, isVisible }) => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [octaveShift]);
+  }, [octaveShift, isVisible]);
 
   // Create a 6x6 grid
   const grid = Array(6).fill(null).map(() => Array(6).fill(null));

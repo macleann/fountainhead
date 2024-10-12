@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
-// import outsideTape from '../images/Tape Fountainhead-0000021.jpg';
-// import insideTape from '../images/Tape Fountainhead-0000013.jpg';
-// import cd from '../images/Tape Fountainhead-0000052.jpg';
+import outsideTape from '../images/Tape Fountainhead-0000021.jpg';
+import insideTape from '../images/Tape Fountainhead-0000013.jpg';
+import cd from '../images/Tape Fountainhead-0000052.jpg';
 import boatman from '../images/Video.mov';
 import Modal from '../components/Modal';
 
@@ -109,15 +109,15 @@ const LandingPage: React.FC<LandingPageProps> = ({ setIsVisible }) => {
                     <div className="flex flex-col w-1/4 text-s text-wrap">{renderLinks(4, 7, 'left')}</div>
                 </div>
             )}
-            {/* <iframe
+            <iframe
                 className="w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[650px] max-w-[480px] mb-10 border-0"
                 src="https://bandcamp.com/EmbeddedPlayer/album=4238437936/size=large/bgcol=333333/linkcol=2ebd35/tracklist=false/transparent=true/"
                 seamless
                 title="Fountainhead Bandcamp album embed"
                 >
                 <a href="https://volunteerdepartment.bandcamp.com/album/fountainhead">Fountainhead by Volunteer Department</a>
-            </iframe> */}
-            {/* <div className="flex flex-col items-center">
+            </iframe>
+            <div className="flex flex-col items-center">
                 <p className="text-white text-xl text-center mt-8">
                     MERCH
                 </p>
@@ -136,7 +136,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ setIsVisible }) => {
                     alt="inside tape of Fountainhead" 
                     className="max-w-l md:max-w-3xl h-auto mb-8"
                 />
-            </div> */}
+            </div>
             
             <div className="flex flex-col items-center mb-10">
                 <p className="mb-6 text-white text-xl text-center">
