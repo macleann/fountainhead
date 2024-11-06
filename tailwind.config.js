@@ -28,15 +28,22 @@ module.exports = {
           scrollbarWidth: 'thin',
           scrollbarColor: 'white black',
           '&::-webkit-scrollbar': {
-            width: '16px',
+            width: '6px',
           },
           '&::-webkit-scrollbar-track': {
             backgroundColor: 'black',
           },
           '&::-webkit-scrollbar-thumb': {
             backgroundColor: 'white',
-            border: '4px solid black',
+            border: '2px solid black',
+            borderRadius: '3px',
           },
+        },
+        '.overflow-anchor-none': {
+          overflowAnchor: 'none',
+        },
+        '.overflow-anchor-auto': {
+          overflowAnchor: 'auto',
         },
       }
       addUtilities(newUtilities, ['responsive', 'hover'])

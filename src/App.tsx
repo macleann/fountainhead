@@ -2,45 +2,75 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { GameStateProvider } from './contexts/GameStateContext';
+import { TypewriterProvider } from './contexts/TypewriterContext';
+import { CabinProvider } from './contexts/CabinContext';
 // import HomePage from './pages/HomePage';
 // import RootPage from './pages/RootPage';
 // import WormPage from './pages/WormPage';
 import DotMatrix from './components/DotMatrix';
 import SaveIcon from './components/SaveIcon/SaveIcon';
 import LandingPage from './pages/LandingPage';
-import OldFriendChatPage from './pages/OldFriendChatPage';
+// import OldFriendChatPage from './pages/OldFriendChatPage';
 import ChatProvider from './contexts/ChatContext';
-import HedgeEntrancePage from './pages/HedgeEntrancePage';
+// import HedgeEntrancePage from './pages/HedgeEntrancePage';
 import NotFoundPage from './pages/404Page';
 import ProloguePage from './pages/ProloguePage';
-import CabinPage from './pages/CabinPage';
+import CabinHandler from './pages/CabinLocale/CabinHandler';
+import ScrollWrapper from './utils/ScrollWrapper';
+import ProtectedRoute from './utils/ProtectedRoute';
 
 function App() {
-  const [isTappable, setIsTappable] = useState(false);
+  const isTappable = false;
   const [isVisible, setIsVisible] = useState(false);
 
   return (
     <GameStateProvider>
       <AuthProvider>
         <ChatProvider>
-          <Router>
-            <div className="relative min-h-screen bg-black font-tiny5 h-full">
-              <DotMatrix isTappable={isTappable} isVisible={isVisible} />
-              <SaveIcon />
-              <div className="relative z-10">
-                <Routes>
-                  <Route path="/" element={<LandingPage setIsVisible={setIsVisible} />} />
-                  <Route path="*" element={<NotFoundPage />} />
-                  <Route path="/prologue" element={<ProloguePage />} />
-                  <Route path="/cabin" element={<CabinPage />} />
-                  <Route path="/hedgepath" element={<HedgeEntrancePage />} />
-                  {/* <Route path="/root" element={<RootPage setIsTappable={setIsTappable} />} />
-                  <Route path="/worm" element={<WormPage />} /> */}
-                  <Route path="/oldfriend" element={<OldFriendChatPage />} />
-                </Routes>
-              </div>
-            </div>
-          </Router>
+          <TypewriterProvider>
+            <CabinProvider>
+              <ScrollWrapper>
+                <Router>
+                  <div className="relative min-h-screen bg-black font-tiny5 h-full">
+                    <DotMatrix isTappable={isTappable} isVisible={isVisible} />
+                    <SaveIcon />
+                    <div className="relative z-10">
+                      <Routes>
+                        <Route path="*" element={<NotFoundPage />} />
+                        <Route path="/" element={<LandingPage setIsVisible={setIsVisible} />} />
+                        <Route 
+                          path="/prologue" 
+                          element={
+                            <ProtectedRoute
+                              preventIfVisited={['cabin']}
+                              redirectTo="/*"
+                            >
+                              <ProloguePage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/cabin"
+                          element={
+                            <ProtectedRoute
+                              requiredState={['replacement_answer']}
+                              redirectTo="/*"
+                            >
+                              <CabinHandler />
+                            </ProtectedRoute>
+                          }
+                        />
+                        {/* <Route path="/hedgepath" element={<HedgeEntrancePage />} />
+                        <Route path="/root" element={<RootPage setIsTappable={setIsTappable} />} />
+                        <Route path="/worm" element={<WormPage />} /> 
+                        <Route path="/oldfriend" element={<OldFriendChatPage />} /> */}
+                      </Routes>
+                    </div>
+                  </div>
+                </Router>
+              </ScrollWrapper>
+            </CabinProvider>
+          </TypewriterProvider>
         </ChatProvider>
       </AuthProvider>
     </GameStateProvider>

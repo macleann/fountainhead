@@ -20,6 +20,12 @@
   border: 4px solid black;
 }
 
+@layer components {
+  .button{
+    @apply w-full bg-black hover:bg-white text-white hover:text-black border border-white px-4 py-2 transition-colors duration-300
+  }
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

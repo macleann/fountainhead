@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
-import outsideTape from '../images/Tape Fountainhead-0000021.jpg';
-import insideTape from '../images/Tape Fountainhead-0000013.jpg';
-import cd from '../images/Tape Fountainhead-0000052.jpg';
+import { useGameState } from '../contexts/GameStateContext';
+// import outsideTape from '../images/Tape Fountainhead-0000021.jpg';
+// import insideTape from '../images/Tape Fountainhead-0000013.jpg';
+// import cd from '../images/Tape Fountainhead-0000052.jpg';
 import boatman from '../images/Video.mov';
 import Modal from '../components/Modal';
+import lastVisitedToRoute from '../utils/LastVisitedToRoute';
 
 interface LandingPageProps {
     setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,7 +15,8 @@ interface LandingPageProps {
 const LandingPage: React.FC<LandingPageProps> = ({ setIsVisible }) => {
     const navigate = useNavigate();
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-    const [modalContent, setModalContent] = useState({ isOpen: false, title: '', content: '' });
+    const [modalContent, setModalContent] = useState({ isOpen: false, title: '', content: '', requirePassword: false  });
+    const { gameState } = useGameState();
     const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
@@ -35,10 +38,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ setIsVisible }) => {
         playVideo();
     }, []);
 
-    const handleClick = () => {
-        navigate('/prologue');
-    }
-
     setIsVisible(false);
 
     const links = [
@@ -48,15 +47,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ setIsVisible }) => {
         { title: 'The Dream in LA', content: "File not found. Please visit the Memory Field." },
         { title: 'The Static', content: "You'll need to speak with Old Friend before you go into the static" },
         { title: 'Give Me Strength for Tomorrow', content: "Work towards the things that work towards you. Take your Time. You got this - VD" },
-        { title: 'Free Merch Bundle of Champion', content: "Hmm. I don't see a sword or a spool of thread in your inventory. Please complete fountain.world before claiming the Merch Bundle of Champion." },
+        { title: 'Free Merch Bundle of Champion', content: "Hmm. I don't see a sword or a spool of thread in your inventory. Please complete fountainhead.world before claiming the Merch Bundle of Champion." }
     ];
 
-    const openModal = (title: string, content: string) => {
-        setModalContent({ isOpen: true, title, content });
+    // todo: debug opening modal triggering ScrollWrapper util
+    const openModal = (title: string, content: string, requirePassword: boolean) => {
+        setModalContent({ isOpen: true, title, content, requirePassword });
     };
 
     const closeModal = () => {
-        setModalContent({ isOpen: false, title: '', content: '' });
+        setModalContent({ isOpen: false, title: '', content: '', requirePassword: false });
     };
 
     const renderLinks = (start: number, end: number, alignment: 'left' | 'right' | 'center') => {
@@ -65,11 +65,39 @@ const LandingPage: React.FC<LandingPageProps> = ({ setIsVisible }) => {
                 key={index + start} 
                 className={`text-white cursor-pointer hover:text-green-500 mt-2 mb-4`}
                 style={{textAlign: alignment}}
-                onClick={() => openModal(link.title, link.content)}
+                onClick={() => openModal(link.title, link.content, false)}
             >
                 {link.title}
             </p>
-        ));
+            ));
+    };
+
+    const handleClick = () => {
+        openModal('PLSR GRDN', 'Please enter the password to continue.', true);
+    };
+
+    const handlePasswordSubmit = (password: string) => {
+        // You can change this password to whatever you want
+        const correctPassword = 'fountainhead2024';
+        
+        if (password === correctPassword) {
+            setModalContent({ isOpen: false, title: '', content: '', requirePassword: false });
+            // todo: move this logic back to handleClick in the future
+            console.log('gameState', gameState);
+            if (gameState?.last_visited) {
+                const route = lastVisitedToRoute(gameState.last_visited);
+                navigate(route);
+            } else {
+                navigate('/prologue');
+            }
+        } else {
+            setModalContent({
+                isOpen: true,
+                title: 'Error',
+                content: 'Incorrect password. Please try again.',
+                requirePassword: true
+            });
+        }
     };
 
     return (
@@ -109,7 +137,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ setIsVisible }) => {
                     <div className="flex flex-col w-1/4 text-s text-wrap">{renderLinks(4, 7, 'left')}</div>
                 </div>
             )}
-            <iframe
+            {/* <iframe
                 className="w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[650px] max-w-[480px] mb-10 border-0"
                 src="https://bandcamp.com/EmbeddedPlayer/album=4238437936/size=large/bgcol=333333/linkcol=2ebd35/tracklist=false/transparent=true/"
                 seamless
@@ -136,7 +164,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ setIsVisible }) => {
                     alt="inside tape of Fountainhead" 
                     className="max-w-l md:max-w-3xl h-auto mb-8"
                 />
-            </div>
+            </div> */}
             
             <div className="flex flex-col items-center mb-10">
                 <p className="mb-6 text-white text-xl text-center">
@@ -157,7 +185,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ setIsVisible }) => {
             <Modal 
                 isOpen={modalContent.isOpen}
                 onClose={closeModal}
+                color='red-500'
+                title={modalContent.title}
                 content={modalContent.content}
+                requirePassword={modalContent?.requirePassword}
+                onPasswordSubmit={handlePasswordSubmit}
             />
         </div>
     );
