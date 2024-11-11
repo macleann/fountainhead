@@ -50,13 +50,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return response.data;
   };
 
-  const logout = async () => {
-    await api.post('/logout');
+  const handleLogout = async () => {
     setUser(null);
     setToken(null);
+    setGameState({});
     localStorage.removeItem('token');
     delete api.defaults.headers.common['Authorization'];
-    setGameState({});
+    window.location.href = '/';
+  };
+
+  const logout = async () => {
+    try {
+      await api.post('/logout');
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      await handleLogout();
+    }
   };
 
   const register = async (userData: { username: string; firstName: string; lastName: string; email: string; password: string; game_state?: GameState }) => {

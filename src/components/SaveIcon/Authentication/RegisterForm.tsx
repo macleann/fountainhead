@@ -13,6 +13,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchForm }) => {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState<string | null>(null);
     const [isFormValid, setIsFormValid] = useState(false);
     const { register } = useAuth();
     const { gameState, updateGameState } = useGameState();
@@ -30,18 +31,37 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchForm }) => {
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!isFormValid) return;
+        
         try {
-            const response = await register({ username, firstName, lastName, email, password, game_state: gameState });
+            setError(null); // Clear any previous errors
+            const response = await register({ 
+                username, 
+                firstName, 
+                lastName, 
+                email, 
+                password, 
+                game_state: gameState 
+            });
             if (response && response.game_state) {
                 await updateGameState(response.game_state);
             }
-        } catch (error) {
-            console.error('Registration failed:', error);
+        } catch (err: any) {
+            // Handle different types of errors
+            if (err.response && err.response.data && err.response.data.error) {
+                setError(err.response.data.error);
+            } else {
+                setError('An unexpected error occurred. Please try again.');
+            }
         }
     };
 
     return (
         <form onSubmit={handleRegister} className="space-y-4">
+            {error && (
+                <div className="p-3 text-red-500 text-sm border border-red-500">
+                    {error}
+                </div>
+            )}
             <input
                 type="text"
                 placeholder="username"

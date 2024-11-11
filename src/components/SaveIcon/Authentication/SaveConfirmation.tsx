@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useGameState } from '../../../contexts/GameStateContext';
 
@@ -10,7 +9,6 @@ interface SaveConfirmationProps {
 const SaveConfirmation: React.FC<SaveConfirmationProps> = ({ onClose }) => {
     const { gameState, setGameState, lastSave, updateGameState, clearGameState } = useGameState();
     const { logout } = useAuth();
-    const navigate = useNavigate();
     const lastSaveDate = new Date(lastSave).toLocaleString();
 
     const handleSave = async () => {
@@ -22,10 +20,23 @@ const SaveConfirmation: React.FC<SaveConfirmationProps> = ({ onClose }) => {
 
     const handleClear = async () => {
         await clearGameState();
-        setGameState({})
-        navigate('/');
+        setGameState({});
         onClose();
-    }
+    };
+
+    const handleLogout = async () => {
+        try {
+            // First save the current state
+            if (gameState && Object.keys(gameState).length > 0) {
+                await updateGameState(gameState);
+            }
+        } catch (error) {
+            console.error('Error saving state before logout:', error);
+        } finally {
+            // Then logout
+            await logout();
+        }
+    };
 
     return (
         <div className='flex flex-col'>
@@ -33,22 +44,21 @@ const SaveConfirmation: React.FC<SaveConfirmationProps> = ({ onClose }) => {
             <div className="flex justify-end">
                 <button
                     onClick={handleSave}
-                    className=" bg-black hover:bg-white text-white hover:text-black border border-white hover:border-black px-4 py-2 mr-2"
+                    className="bg-black hover:bg-white text-white hover:text-black border border-white hover:border-black px-4 py-2 mr-2"
                 >
                     save
                 </button>
                 <button
                     onClick={onClose}
-                    className=" bg-black hover:bg-white text-white hover:text-black border border-white hover:border-black px-4 py-2"
+                    className="bg-black hover:bg-white text-white hover:text-black border border-white hover:border-black px-4 py-2"
                 >
                     cancel
                 </button>
-                
             </div>
             <hr className="border-t border-white my-4 w-full" />
             <div className="flex justify-center">
                 <button
-                    onClick={logout}
+                    onClick={handleLogout}
                     className="bg-black hover:bg-white text-white hover:text-black border border-white hover:border-black text-sm px-3 mx-2 h-6"
                 >
                     logout
