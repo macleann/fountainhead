@@ -66,30 +66,22 @@ const CabinExploration: React.FC<CabinExplorationProps> = ({ onReturnToConversat
                 setCabinState(prev => ({ ...prev, mantelExamined: true }));
                 break;
             case 'Take apple':
-                console.log("I'm logging the first time!", cabinState)
-                console.log("I'm logging the first time!", gameState)
                 response = "You take the apple. It's been added to your inventory.";
                 setGameState(prevState => ({
                     ...prevState,
                     inventory: [...(prevState.inventory || []), 'apple']
                 }));
-                console.log("I'm logging the second time!", cabinState)
-                console.log("I'm logging the second time!", gameState)
                 break;
             case 'Take bowl':
                 response = "You cannot take this bowl, but in picking it up you’ve revealed a key hiding underneath.";
                 setCabinState(prev => ({ ...prev, bowlExamined: true }));
                 break;
             case 'Take key':
-                console.log("I'm logging the first time!", cabinState)
-                console.log("I'm logging the first time!", gameState)
                 response = "You take the key from under the bowl. It's been added to your inventory.";
                 setGameState(prevState => ({
                     ...prevState,
                     inventory: [...(prevState.inventory || []), 'cabin_key']
                 }));
-                console.log("I'm logging the second time!", cabinState)
-                console.log("I'm logging the second time!", gameState)
                 break;
         }
         if (item === 'Remove duct tape') {
@@ -158,7 +150,7 @@ const CabinExploration: React.FC<CabinExplorationProps> = ({ onReturnToConversat
                         Go painting/mantel on wall
                     </button>
                 )}
-                {cabinState.mantelExamined && !gameState.inventory?.includes('Take apple') && (
+                {cabinState.mantelExamined && !gameState.inventory?.includes('apple') && (
                     <button onClick={() => handleInspectItem('Take apple')} className="button">
                         Take apple
                     </button>

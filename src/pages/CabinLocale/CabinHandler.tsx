@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useGameState } from '../../contexts/GameStateContext';
 import CabinStart from './CabinStart';
 import CabinReturn from './CabinReturn';
@@ -6,21 +6,19 @@ import CabinReturn from './CabinReturn';
 const CabinHandler: React.FC = () => {
     const { gameState, setGameState } = useGameState();
 
-    useEffect(() => {
-        if (!gameState?.locations.includes('cabin')) {
-            setGameState(prev => ({
-                ...prev,
-                locations: ['cabin'],
-            }));
-        }
+    if (!gameState?.locations.includes('cabin')) {
+        setGameState(prev => ({
+            ...prev,
+            locations: ['cabin'],
+        }));
+    }
 
-        if (gameState?.last_visited !== 'cabin') {
-            setGameState(prev => ({
-                ...prev,
-                last_visited: 'cabin',
-            }));
-        }
-    }, [gameState, setGameState]);
+    if (gameState?.last_visited !== 'cabin') {
+        setGameState(prev => ({
+            ...prev,
+            last_visited: 'cabin',
+        }));
+    }
 
     console.log('gameState:', gameState);
     
