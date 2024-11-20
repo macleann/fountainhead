@@ -15,28 +15,39 @@ interface DotMatrixProps {
 
 const DotMatrix: React.FC<DotMatrixProps> = ({ isTappable, isVisible }) => {
   const [activeNote, setActiveNote] = useState<string | null>(null);
-  const baseOctave = 4; // Default octave
+  const baseOctave = 4;
   const [octaveShift, setOctaveShift] = useState(0);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      const key = event.key.toLowerCase();
-      const note = KEY_MAP[key];
-      
-      // Handle octave shifts
-      if (key === 'z') {
-        setOctaveShift(prevShift => Math.max(prevShift - 1, -1)); // Limit downward shift
-      } else if (key === 'x') {
-        setOctaveShift(prevShift => Math.min(prevShift + 1, 1)); // Limit upward shift
+      // Guard against undefined or null event
+      if (!event || !event.key) {
+        return;
       }
 
-      if (note && isVisible) {
-        setActiveNote(`${note}-${baseOctave + octaveShift}`);
-        playTone(note, baseOctave + octaveShift);
+      const key = event.key.toLowerCase();
+      
+      // Only proceed if the key exists and we're visible
+      if (key && isVisible) {
+        // Handle octave shifts
+        if (key === 'z') {
+          setOctaveShift(prevShift => Math.max(prevShift - 1, -1)); // Limit downward shift
+          return;
+        } else if (key === 'x') {
+          setOctaveShift(prevShift => Math.min(prevShift + 1, 1)); // Limit upward shift
+          return;
+        }
+
+        // Handle notes
+        const note = KEY_MAP[key];
+        if (note) {
+          setActiveNote(`${note}-${baseOctave + octaveShift}`);
+          playTone(note, baseOctave + octaveShift);
+        }
       }
     };
 
-    const handleKeyUp = (event: KeyboardEvent) => {
+    const handleKeyUp = () => {
       setActiveNote(null);
     };
 
@@ -72,6 +83,7 @@ const DotMatrix: React.FC<DotMatrixProps> = ({ isTappable, isVisible }) => {
   if (!isVisible) {
     return null;
   }
+
   return (
     <div className={`fixed inset-0 z-0 ${isTappable ? 'pointer-events-auto' : 'pointer-events-none'} flex items-center justify-center`}>
       <div className="grid grid-cols-6 gap-2">
