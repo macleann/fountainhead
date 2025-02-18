@@ -82,16 +82,16 @@ const FriendModal: React.FC<{
 );
 
 const LandingPage: React.FC = () => {
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    // const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
     const [activeModals, setActiveModals] = useState<ModalData[]>([]);
     const [isQuestionAnswered, setIsQuestionAnswered] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
 
-    useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth < 768);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    // useEffect(() => {
+    //     const handleResize = () => setIsMobile(window.innerWidth < 768);
+    //     window.addEventListener('resize', handleResize);
+    //     return () => window.removeEventListener('resize', handleResize);
+    // }, []);
 
     useEffect(() => {
         const playVideo = async () => {

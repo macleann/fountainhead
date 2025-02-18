@@ -83,7 +83,7 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
           </React.Fragment>
         );
       })}
-      {!isTypingComplete || isBlinking && (
+      {(!isTypingComplete || isBlinking) && (
         <span className="inline-block w-2 h-5 bg-white ml-1 animate-blink"></span>
       )}
     </div>
