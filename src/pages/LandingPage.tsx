@@ -1,19 +1,90 @@
-import React, { useState, useEffect, useRef } from 'react';
-// import { useNavigate } from "react-router-dom";
-// import outsideTape from '../images/Tape Fountainhead-0000021.jpg';
-// import insideTape from '../images/Tape Fountainhead-0000013.jpg';
-// import cd from '../images/Tape Fountainhead-0000052.jpg';
+import React, { useState, useEffect, useRef, ReactNode } from 'react';
+import TypewriterEffect from '../components/TypewriterEffect';
 import boatman from '../images/Video.mov';
 import Modal from '../components/Modal';
+import sam from '../images/sam.jpg';
+import zook from '../images/zook.jpg';
 
-// interface LandingPageProps {
-//     setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
-// }
+interface ModalData {
+  id: string;
+  isOpen: boolean;
+  title: string;
+  content: ReactNode;
+  width?: string;
+}
+
+const CountdownTimer: React.FC = () => {
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  });
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const eventDate = new Date('2025-03-07T19:00:00');
+      const now = new Date();
+      const difference = eventDate.getTime() - now.getTime();
+
+      if (difference > 0) {
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((difference / 1000 / 60) % 60);
+        const seconds = Math.floor((difference / 1000) % 60);
+
+        setTimeLeft({ days, hours, minutes, seconds });
+      }
+    };
+
+    // Calculate immediately
+    calculateTimeLeft();
+    
+    // Update every second
+    const timer = setInterval(calculateTimeLeft, 1000);
+
+    // Cleanup on unmount
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="text-white">
+      <p className="mb-2">Today is {new Date().toLocaleDateString()}. You have {timeLeft.days} days, {timeLeft.hours} hours, {timeLeft.minutes} minutes, and {timeLeft.seconds} seconds until the event on March 7st at 7PM.</p>
+    </div>
+  );
+};
+
+const FriendModal: React.FC<{ 
+  image: string; 
+  name: string; 
+  musicUrl: string;
+}> = ({ image, name, musicUrl }) => (
+  <div className="flex flex-col items-center">
+    <div className="relative w-full h-96 mb-4">
+      <img 
+        src={image} 
+        alt={name} 
+        className="w-full h-full object-cover"
+      />
+      <a 
+        href={musicUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="absolute bottom-4 left-1/2 transform -translate-x-1/2 
+                   bg-white text-black p-2 w-20 
+                   hover:bg-black hover:text-white hover:border-white border-2 
+                   hover:animate-blink text-center"
+      >
+        listen
+      </a>
+    </div>
+  </div>
+);
 
 const LandingPage: React.FC = () => {
-    // const navigate = useNavigate();
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-    const [modalContent, setModalContent] = useState({ isOpen: false, title: '', content: '' });
+    const [activeModals, setActiveModals] = useState<ModalData[]>([]);
+    const [isQuestionAnswered, setIsQuestionAnswered] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
@@ -35,129 +106,153 @@ const LandingPage: React.FC = () => {
         playVideo();
     }, []);
 
-    // const handleClick = () => {
-    //     navigate('/game');
-    // }
+    const openModal = (modalData: ModalData) => {
+        const existingModal = activeModals.find(modal => modal.id === modalData.id);
+        if (!existingModal) {
+            setActiveModals(prev => [...prev, modalData]);
+        }
+    };
 
-    // setIsVisible(false);
+    const closeModal = (id: string) => {
+        setActiveModals(prev => prev.filter(modal => modal.id !== id));
+    };
 
-    const links = [
-        { title: 'Lyrics', content: "You'll need a petal from the Pleasure Garden to access this…" },
-        { title: 'Cave of Doubt', content: "You can't get in this way…" },
-        { title: 'Memory Field', content: "You'll need to go through the Pleasure Garden…" },
-        { title: 'The Dream in LA', content: "File not found. Please visit the Memory Field." },
-        { title: 'The Static', content: "You'll need to speak with Old Friend before you go into the static" },
-        { title: 'Give Me Strength for Tomorrow', content: "Work towards the things that work towards you. Take your Time. You got this - VD" },
-        { title: 'Free Merch Bundle of Champion', content: "Hmm. I don't see a sword or a spool of thread in your inventory. Please complete fountain.world before claiming the Merch Bundle of Champion." },
+    const specialWords = [
+        {
+            word: 'you',
+            className: 'hover:text-green-500',
+            onClick: () => {
+                const email = 'volunteerdeptoffice@gmail.com';
+                const subject = encodeURIComponent('Who are you?');
+                const mailtoUrl = `mailto:${email}?subject=${subject}`;
+                
+                const link = document.createElement('a');
+                link.href = mailtoUrl;
+                
+                try {
+                    link.click();
+                } catch (e) {
+                    alert('Who are you?');
+                }
+            },
+        },
+        {
+            word: 'visited',
+            className: 'hover:text-blue-500',
+            onClick: () => openModal({
+                id: 'visited',
+                isOpen: true,
+                title: 'Visit Us',
+                content: 'Visit Volunteer Department live in person at Drkmttr Collective'
+            }),
+        },
+        {
+            word: 'friend',
+            className: 'hover:text-yellow-500',
+            onClick: () => {
+                openModal({
+                    id: 'sam',
+                    isOpen: true,
+                    title: 'sam_hoffman',
+                    content: <FriendModal 
+                              image={sam}
+                              name="sam_hoffman"
+                              musicUrl="https://sam-hoffman.bandcamp.com/"
+                            />,
+                    width: 'w-96'
+                });
+                
+                openModal({
+                    id: 'zook',
+                    isOpen: true,
+                    title: 'zook',
+                    content: <FriendModal 
+                              image={zook}
+                              name="zook"
+                              musicUrl="https://zook1.bandcamp.com/"
+                            />,
+                    width: 'w-96'
+                });
+            },
+        },
+        {
+            word: 'today',
+            className: 'hover:text-red-500',
+            onClick: () => {
+                openModal({
+                    id: 'today',
+                    isOpen: true,
+                    title: 'today',
+                    content: <CountdownTimer />,
+                    width: 'w-96'
+                });
+            },
+        }
     ];
 
-    const openModal = (title: string, content: string) => {
-        setModalContent({ isOpen: true, title, content });
-    };
-
-    const closeModal = () => {
-        setModalContent({ isOpen: false, title: '', content: '' });
-    };
-
-    const renderLinks = (start: number, end: number, alignment: 'left' | 'right' | 'center') => {
-        return links.slice(start, end).map((link, index) => (
-            <p 
-                key={index + start} 
-                className={`text-white cursor-pointer hover:text-green-500 mt-2 mb-4`}
-                style={{textAlign: alignment}}
-                onClick={() => openModal(link.title, link.content)}
-            >
-                {link.title}
-            </p>
-        ));
-    };
+    if (!isQuestionAnswered) {
+        return (
+            <div className="flex flex-col justify-center items-center min-h-screen bg-black text-white p-8">
+                <div className="flex flex-col items-center">
+                    <div className='text-left'>
+                        <TypewriterEffect text="Are you the root or the worm?" isBlinking={true}/>
+                    </div>
+                    <div className='flex flex-row'>
+                        <button
+                            type='button'
+                            onClick={() => setIsQuestionAnswered(true)}
+                            className='bg-white text-black p-2 m-4 w-20 hover:bg-black hover:text-white hover:border-white border-2 hover:animate-blink'
+                        >
+                            root
+                        </button>
+                        <button
+                            type='button'
+                            onClick={() => setIsQuestionAnswered(true)}
+                            className='bg-white text-black p-2 m-4 w-20 hover:bg-black hover:text-white hover:border-white border-2 hover:animate-blink'
+                        >
+                            worm
+                        </button>
+                    </div>
+                    <p className="text-xs text-center absolute bottom-10">
+                        © 2025 Volunteer Department, All rights reserved
+                    </p>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="flex flex-col justify-between items-center min-h-screen bg-black p-8">
-            <div className="flex flex-col items-center">
-                <h1 className="text-white text-5xl mb-8 text-center">VOLUNTEER DEPARTMENT</h1>
-                <h2 className="text-white text-3xl mb-10">FOUNTAINHEAD</h2>
-            </div>
-            {isMobile ? (
-                <>
-                    <video 
-                        ref={videoRef}
-                        src={boatman} 
-                        autoPlay 
-                        loop 
-                        muted 
-                        playsInline
-                        className='mb-4 w-full' 
-                    />
-                    <div className="flex justify-between w-full mb-10">
-                        <div className="flex flex-col w-1/2 text-s text-wrap">{renderLinks(0, 4, 'center')}</div>
-                        <div className="flex flex-col w-1/2 text-s text-wrap">{renderLinks(4, 7, 'center')}</div>
-                    </div>
-                </>
-            ) : (
-                <div className="flex justify-between items-center w-full mb-10">
-                    <div className="flex flex-col w-1/4 text-s text-wrap">{renderLinks(0, 4, 'right')}</div>
-                    <video 
-                        ref={videoRef}
-                        src={boatman} 
-                        autoPlay 
-                        loop 
-                        muted 
-                        playsInline
-                        className='mx-4' 
-                    />
-                    <div className="flex flex-col w-1/4 text-s text-wrap">{renderLinks(4, 7, 'left')}</div>
-                </div>
-            )}
-            {/* <iframe
-                className="w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[650px] max-w-[480px] mb-10 border-0"
-                src="https://bandcamp.com/EmbeddedPlayer/album=4238437936/size=large/bgcol=333333/linkcol=2ebd35/tracklist=false/transparent=true/"
-                seamless
-                title="Fountainhead Bandcamp album embed"
-                >
-                <a href="https://volunteerdepartment.bandcamp.com/album/fountainhead">Fountainhead by Volunteer Department</a>
-            </iframe> */}
-            {/* <div className="flex flex-col items-center">
-                <p className="text-white text-xl text-center mt-8">
-                    MERCH
-                </p>
-                <img 
-                    src={cd} 
-                    alt="CD of Fountainhead" 
-                    className="max-w-l md:max-w-3xl h-auto mb-4"
-                />
-                <img 
-                    src={outsideTape} 
-                    alt="Tape of Fountainhead" 
-                    className="max-w-l md:max-w-3xl h-auto mb-4"
-                />
-                <img 
-                    src={insideTape} 
-                    alt="inside tape of Fountainhead" 
-                    className="max-w-l md:max-w-3xl h-auto mb-8"
-                />
-            </div> */}
-            {/* <button 
-                className="text-white text-xl py-4 px-8 border border-white hover:bg-white hover:text-black transition-colors duration-300"
-                onClick={handleClick}
-            >
-                ENTER FOUNTAINHEAD
-            </button> */}
-            <div className="flex flex-col items-center mb-10">
-                <p className="text-white text-xl text-center">
-                    where did you <a href='https://volunteerdepartment.bandcamp.com/album/fountainhead' className='text-green-500'>go</a>, champion?
-                </p>
-            </div> 
-            <div className="flex flex-col items-center">
-                <p className="text-white text-xs text-center">
-                    © 2024 Volunteer Department, All rights reserved
-                </p>
-            </div>
-            <Modal 
-                isOpen={modalContent.isOpen}
-                onClose={closeModal}
-                content={modalContent.content}
+        <div className="flex flex-col justify-center min-h-screen bg-black text-white relative overflow-hidden">
+            <video 
+                ref={videoRef}
+                src={boatman} 
+                autoPlay 
+                loop 
+                muted 
+                playsInline
+                className="absolute inset-0 h-screen w-auto max-w-none mx-auto object-cover"
             />
+            <div className="relative z-10">
+                <div className="text-center">
+                    <TypewriterEffect 
+                        text="Have you visited with old friend today?"
+                        specialWords={specialWords}
+                    />
+                </div>
+            </div>
+            <p className="text-xs text-center fixed bottom-10 left-1/2 transform -translate-x-1/2 z-10">
+                © 2025 Volunteer Department, All rights reserved
+            </p>
+            {activeModals.map((modal) => (
+                <Modal 
+                    key={modal.id}
+                    isOpen={modal.isOpen}
+                    onClose={() => closeModal(modal.id)}
+                    title={modal.title}
+                    content={modal.content}
+                    width={modal.width}
+                />
+            ))}
         </div>
     );
 }
