@@ -22,13 +22,26 @@ const Modal: React.FC<ModalProps> = ({
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [zIndex, setZIndex] = useState(50);
 
-  // Convert Tailwind width class to pixel value
   const getWidthInPixels = (widthClass: string) => {
-    const numStr = widthClass.replace('w-', '');
+    // Handle responsive classes by taking the mobile-first class
+    const mobileClass = widthClass.split(' ')[0];
+    const numStr = mobileClass.replace('w-', '');
+    
+    // Handle special cases first
     if (numStr === 'full') return window.innerWidth;
-    if (numStr === '80') return 320; // 20rem * 16px
-    if (numStr === '96') return 384; // 24rem * 16px
-    return 320; // default fallback
+    if (numStr === '1/2') return window.innerWidth / 2;
+    if (numStr === '1/3') return window.innerWidth / 3;
+    if (numStr === '1/4') return window.innerWidth / 4;
+    
+    // Handle numeric values (converts Tailwind's rem-based scale to pixels)
+    const num = parseInt(numStr);
+    if (!isNaN(num)) {
+      // Tailwind's width scale is generally in 0.25rem increments
+      // So w-4 = 1rem = 16px, w-8 = 2rem = 32px, etc.
+      return (num / 4) * 16;
+    }
+    
+    return 320; // default fallback width
   };
 
   useEffect(() => {
@@ -45,17 +58,6 @@ const Modal: React.FC<ModalProps> = ({
     }
   }, [isOpen, width]);
 
-  // Mouse event handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-    setDragOffset({
-      x: e.clientX - position.x,
-      y: e.clientY - position.y
-    });
-    setZIndex(prev => prev + 1);
-  };
-
   const handleMouseMove = (e: React.MouseEvent) => {
     if (isDragging) {
       const modalWidth = getWidthInPixels(width);
@@ -67,22 +69,6 @@ const Modal: React.FC<ModalProps> = ({
 
       setPosition({ x: newX, y: newY });
     }
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  // Touch event handlers
-  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    const touch = e.touches[0];
-    setIsDragging(true);
-    setDragOffset({
-      x: touch.clientX - position.x,
-      y: touch.clientY - position.y
-    });
-    setZIndex(prev => prev + 1);
   };
 
   const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
@@ -99,6 +85,32 @@ const Modal: React.FC<ModalProps> = ({
     }
   };
 
+  // ... rest of the component remains the same ...
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+    setDragOffset({
+      x: e.clientX - position.x,
+      y: e.clientY - position.y
+    });
+    setZIndex(prev => prev + 1);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    setIsDragging(true);
+    setDragOffset({
+      x: touch.clientX - position.x,
+      y: touch.clientY - position.y
+    });
+    setZIndex(prev => prev + 1);
+  };
+
   const handleTouchEnd = () => {
     setIsDragging(false);
   };
@@ -107,7 +119,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div 
-      className="fixed touch-none"
+      className={`fixed touch-none ${width}`}
       style={{ 
         left: `${position.x}px`, 
         top: `${position.y}px`,
@@ -120,7 +132,7 @@ const Modal: React.FC<ModalProps> = ({
       onTouchEnd={handleTouchEnd}
     >
       <div 
-        className={`bg-black border border-white ${width}`}
+        className={`bg-black border border-white`}
         style={{ 
           cursor: isDragging ? 'grabbing' : 'grab'
         }}
