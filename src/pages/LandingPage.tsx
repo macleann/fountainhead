@@ -136,6 +136,13 @@ const LandingPage: React.FC = () => {
 
     const specialWords = [
         {
+            word: 'Have',
+            className: 'hover:text-orange-500',
+            onClick: () => {
+                window.open('https://volunteerdepartment.bandcamp.com/album/fountainhead', '_blank', 'noopener,noreferrer');
+            },
+        },
+        {
             word: 'you',
             className: 'hover:text-green-500',
             onClick: () => {
