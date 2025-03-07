@@ -9,6 +9,7 @@ interface SpecialWord {
 interface TypewriterEffectProps {
   text: string;
   loop?: boolean;
+  isBlinking?: boolean;
   specialWords?: SpecialWord[];
   onComplete?: () => void;
 }
@@ -16,6 +17,7 @@ interface TypewriterEffectProps {
 const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
   text,
   loop = false,
+  isBlinking = false,
   specialWords = [],
   onComplete = () => {},
 }) => {
@@ -81,7 +83,7 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
           </React.Fragment>
         );
       })}
-      {!isTypingComplete && (
+      {(!isTypingComplete || isBlinking) && (
         <span className="inline-block w-2 h-5 bg-white ml-1 animate-blink"></span>
       )}
     </div>
