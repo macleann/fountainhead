@@ -12,34 +12,30 @@ interface ModalData {
 }
 
 const CountdownTimer: React.FC = () => {
-  const [timeLeft, setTimeLeft] = useState({
+  const [timeSince, setTimeSince] = useState({
     days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
+    hours: 0
   });
 
   useEffect(() => {
-    const calculateTimeLeft = () => {
+    const calculateTimeSince = () => {
       const eventDate = new Date('2025-03-07T19:00:00');
       const now = new Date();
-      const difference = eventDate.getTime() - now.getTime();
+      const difference = now.getTime() - eventDate.getTime();
 
       if (difference > 0) {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
         const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((difference / 1000 / 60) % 60);
-        const seconds = Math.floor((difference / 1000) % 60);
 
-        setTimeLeft({ days, hours, minutes, seconds });
+        setTimeSince({ days, hours });
       }
     };
 
     // Calculate immediately
-    calculateTimeLeft();
+    calculateTimeSince();
     
     // Update every second
-    const timer = setInterval(calculateTimeLeft, 1000);
+    const timer = setInterval(calculateTimeSince, 1000);
 
     // Cleanup on unmount
     return () => clearInterval(timer);
@@ -47,7 +43,7 @@ const CountdownTimer: React.FC = () => {
 
   return (
     <div className="text-white">
-      <p className="mb-2">Today is {new Date().toLocaleDateString()}. You have {timeLeft.days} days, {timeLeft.hours} hours, {timeLeft.minutes} minutes, and {timeLeft.seconds} seconds until the event on March 7th at 7PM.</p>
+      <p className="mb-2">It has been {timeSince.days} days, {timeSince.hours} hours since our last gathering</p>
     </div>
   );
 };
