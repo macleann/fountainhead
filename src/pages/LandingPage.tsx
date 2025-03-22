@@ -2,11 +2,6 @@ import React, { useState, useEffect, useRef, ReactNode } from 'react';
 import TypewriterEffect from '../components/TypewriterEffect';
 import boatman from '../images/Video.mov';
 import Modal from '../components/Modal';
-import sam from '../images/sam.jpg';
-import zook from '../images/zook.jpg';
-import showPosterBlue from '../images/Fountainhead release show blue.jpg';
-import showPosterPink from '../images/Fountainhead release show pink.jpg';
-import showPosterGreen from '../images/Fountainhead release show green.jpg';
 
 interface ModalData {
   id: string;
@@ -17,34 +12,30 @@ interface ModalData {
 }
 
 const CountdownTimer: React.FC = () => {
-  const [timeLeft, setTimeLeft] = useState({
+  const [timeSince, setTimeSince] = useState({
     days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
+    hours: 0
   });
 
   useEffect(() => {
-    const calculateTimeLeft = () => {
+    const calculateTimeSince = () => {
       const eventDate = new Date('2025-03-07T19:00:00');
       const now = new Date();
-      const difference = eventDate.getTime() - now.getTime();
+      const difference = now.getTime() - eventDate.getTime();
 
       if (difference > 0) {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
         const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((difference / 1000 / 60) % 60);
-        const seconds = Math.floor((difference / 1000) % 60);
 
-        setTimeLeft({ days, hours, minutes, seconds });
+        setTimeSince({ days, hours });
       }
     };
 
     // Calculate immediately
-    calculateTimeLeft();
+    calculateTimeSince();
     
     // Update every second
-    const timer = setInterval(calculateTimeLeft, 1000);
+    const timer = setInterval(calculateTimeSince, 1000);
 
     // Cleanup on unmount
     return () => clearInterval(timer);
@@ -52,51 +43,10 @@ const CountdownTimer: React.FC = () => {
 
   return (
     <div className="text-white">
-      <p className="mb-2">Today is {new Date().toLocaleDateString()}. You have {timeLeft.days} days, {timeLeft.hours} hours, {timeLeft.minutes} minutes, and {timeLeft.seconds} seconds until the event on March 7th at 7PM.</p>
+      <p className="mb-2">It has been {timeSince.days} days, {timeSince.hours} hours since our last gathering</p>
     </div>
   );
 };
-
-const ShowPosterModal: React.FC<{ 
-    image: string;
-  }> = ({ image }) => (
-    <div className="flex flex-col items-center">
-      <div className="relative w-full h-72 md:h-96 mb-4">
-        <img 
-          src={image} 
-          alt="Show Poster" 
-          className="w-full h-full object-cover rounded"
-        />
-      </div>
-    </div>
-  );
-
-const FriendModal: React.FC<{ 
-    image: string; 
-    name: string; 
-    musicUrl: string;
-  }> = ({ image, name, musicUrl }) => (
-    <div className="flex flex-col items-center">
-      <div className="relative w-full h-64 md:h-96 mb-4">
-        <img 
-          src={image} 
-          alt={name} 
-          className="w-full h-full object-cover"
-        />
-        <a 
-          href={musicUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="absolute bottom-4 left-1/2 transform -translate-x-1/2 
-                     bg-white text-black p-2 w-20 
-                     hover:bg-black hover:text-white hover:border-white border-2 
-                     hover:animate-blink text-center text-sm"
-        >
-          listen
-        </a>
-      </div>
-    </div>
-  );
 
 const LandingPage: React.FC = () => {
     // const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -158,50 +108,6 @@ const LandingPage: React.FC = () => {
                 } catch (e) {
                     alert('Who are you?');
                 }
-            },
-        },
-        {
-            word: 'visited',
-            className: 'hover:text-blue-500',
-            onClick: () => {
-                const posters = [showPosterBlue, showPosterPink, showPosterGreen];
-                const randomPoster = posters[Math.floor(Math.random() * posters.length)];
-                openModal({
-                    id: 'visited',
-                    isOpen: true,
-                    title: 'Visit Us',
-                    content: <ShowPosterModal image={randomPoster} />,
-                    width: 'w-72 md:w-96'
-                });
-            },
-        },
-        {
-            word: 'friend',
-            className: 'hover:text-yellow-500',
-            onClick: () => {
-                openModal({
-                    id: 'sam',
-                    isOpen: true,
-                    title: 'sam_hoffman',
-                    content: <FriendModal 
-                              image={sam}
-                              name="sam_hoffman"
-                              musicUrl="https://sam-hoffman.bandcamp.com/"
-                            />,
-                    width: 'w-56 md:w-96'
-                });
-                
-                openModal({
-                    id: 'zook',
-                    isOpen: true,
-                    title: 'zook',
-                    content: <FriendModal 
-                              image={zook}
-                              name="zook"
-                              musicUrl="https://zook1.bandcamp.com/"
-                            />,
-                    width: 'w-56 md:w-96'
-                });
             },
         },
         {
